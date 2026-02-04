@@ -35,10 +35,11 @@ class StreamerController {
     }
 
     public function listarStreamers() {
-        $streamers = $this->model->listar();
-        
-        //die(print_r($streamers, true));
-
-        $this->view->display('view/listar.php', $streamers);
+    if (isset($_POST['destacar_id'])) {
+        $this->model->cambiarDestacado($_POST['destacar_id']);
     }
+    
+    $content = $this->model->listar();
+    $this->view->display('view/listar.php', $content);
+}
 }

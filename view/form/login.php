@@ -15,4 +15,9 @@ $username = $_COOKIE['username'] ?? '';
     <input type="checkbox" id="remember" name="remember" class="form-check-input">
   </div>
   <button type="submit" class="btn btn-primary" name="action" value="processLogin">Login</button>
+
+  <?php if (isset($_SESSION['error'])): ?>
+    <p class="text-danger"><?= $_SESSION['error'] ?></p>
+  <?php endif; ?>
+  
 </form>

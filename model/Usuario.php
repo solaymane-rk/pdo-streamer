@@ -12,6 +12,12 @@ class Usuario {
         return $stmt->fetch() ?: null;
     }
 
+    public function obtenerPorUsername(string $username): ?array {
+        $stmt = $this->db->prepare("SELECT id FROM usuarios WHERE username = ? LIMIT 1");
+        $stmt->execute([$username]);
+        return $stmt->fetch() ?: null;
+    }
+
     public function guardar(string $username, $ultima_visita, $total_visitas, ?int $id = null): bool {
         if ($id) {
             $stmt = $this->db->prepare("UPDATE usuarios SET username = ?, ultima_visita = ?, total_visitas = ? WHERE id = ?");
@@ -30,6 +36,6 @@ class Usuario {
         $stmt = $this->db->prepare("SELECT total_visitas FROM usuarios WHERE username = ?");
         $stmt->execute([$username]);
 
-        return (int) $stmt->fetchColumn();
+        return (int) $stmt->fetchColumn() ?? 0;
     }
 }

@@ -14,7 +14,7 @@ class MainController {
     }
 
     public function processRequest() {
-        $_SESSION['error'] = [];
+        $_SESSION['error'] = '';
         $_SESSION['info'] = [];
 
         $request=NULL;
@@ -48,34 +48,49 @@ class MainController {
     }
 
     public function processLogin() {
-        $username = $_POST['username'] ?? 'sin';
+        $username = $_POST['username'] ?? '';
         $isValid = preg_match('/[a-z0-9-]{3,}/', $username);
 
         if(!$isValid) {
-            $_SESSION['error'][] = 'El username no es valido!';
+            $_SESSION['error'] = 'El username no es valido!';
+            header("Location: index.php?action=login");
+            return;
         }
 
         $ultima_visita = time();
-
-        $total_visitas = $this->model->totalVisitas('user') ?? 0;
-
+        $total_visitas = $this->model->totalVisitas($username);
         $total_visitas = $total_visitas + 1;
 
-        $isSaved = $this->model->guardar($username, $ultima_visita, $total_visitas);
+        $id = $this->model->obtenerPorUsername($username);
+        $id_validacion = $id['id'] ?? null;
+        
+        $isSaved = $this->model->guardar($username, $ultima_visita, $total_visitas, $id_validacion);
 
         if($isSaved) {
             $_SESSION['username'] = $username;
-        } else {
-            $_SESSION['error'][] = 'El usuario ya existe!';
-        }
 
-        if(isset($_POST['remember'])) {
-            setcookie('username', $username);
+            if(isset($_POST['remember'])) {
+                setcookie('username', $username);
+            }
+            
+            header("Location: index.php?action=listar");
+        } else {
+            $_SESSION['error'] = 'El usuario ya existe!';
+            header("Location: index.php?action=login");
         }
     }
 
     public function logout() {
         session_destroy();
         setcookie('username', '', time());
+        header("Location: index.php?action=login");
+    }
+
+    public function listarStreamers() {
+        $streamers = $this->model->listar();
+        
+        //die(print_r($streamers, true));
+
+        $this->view->display('view/listar.php', $streamers);
     }
 }
