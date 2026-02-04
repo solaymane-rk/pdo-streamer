@@ -68,6 +68,7 @@ class MainController {
 
         if($isSaved) {
             $_SESSION['username'] = $username;
+            $_SESSION['total_visitas'] = $total_visitas;
 
             if(isset($_POST['remember'])) {
                 setcookie('username', $username);
@@ -82,7 +83,6 @@ class MainController {
 
     public function logout() {
         session_destroy();
-        setcookie('username', '', time());
         header("Location: index.php?action=login");
     }
 
