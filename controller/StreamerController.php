@@ -14,11 +14,7 @@ class StreamerController {
     }
 
     public function processRequest() {
-        $request=NULL;
-
-        if(isset($_POST['action'])) {
-            $request = $_POST['action'];
-        }
+        $request = $_REQUEST['action'] ?? 'login';
 
         switch ($request){
             case "listar":
@@ -38,9 +34,9 @@ class StreamerController {
     }
 
     public function destacar() {
-        if (isset($_POST['destacar_id'])) {
-            $this->model->cambiarDestacado($_POST['destacar_id']);
+        if (isset($_REQUEST['destacar_id'])) {
+            $this->model->cambiarDestacado(nuevoId: $_REQUEST['destacar_id']);
         }
-        header("Location: index.php?action=listar");    
+        header("Location: index.php?section=streamer&action=listar");    
     }
 }
