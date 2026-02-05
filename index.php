@@ -40,6 +40,9 @@ switch ($action) {
     case 'listar':
         $streamerController->listarStreamers();
         break;
+    case "destacar":
+        $streamerController->destacar();
+        break;
     default:
         header("Location: index.php?action=login");
         break;

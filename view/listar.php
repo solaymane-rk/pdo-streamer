@@ -3,9 +3,9 @@
 $destacado = null;
 $normales = [];
 
-foreach($content as $s) {
-    if($s['destacado']) $destacado = $s;
-    else $normales[] = $s;
+foreach($content as $streamer) {
+    if($streamer['destacado']) $destacado = $streamer;
+    else $normales[] = $streamer;
 }
 
 $visitas = $_SESSION['total_visitas'];
@@ -48,19 +48,19 @@ if ($visitas == 1) {
 <h2 class="text-primary">Otros Streamers</h2>
 
 <div class="row g-4">
-    <?php foreach($normales as $s): ?>
+    <?php foreach($normales as $streamer): ?>
         <div class="col-md-3">
             <div class="card bg-primary-subtle text-center">
                 
-                <img src="<?= $s['avatar']; ?>" class="card-img-top rounded-circle mx-auto mt-3" alt="avatar" style="width:80px;height:80px;">
+                <img src="<?= $streamer['avatar']; ?>" class="card-img-top rounded-circle mx-auto mt-3" alt="avatar" style="width:80px;height:80px;">
                 <div class="card-body text-center">
-                    <h5 class="card-title"><?= $s['username']; ?></h5>
-                    <p class="card-text"><?= $s['nombre_real']; ?></p>
-                    <span class="badge bg-primary"><?= number_format($s['followers']); ?> followers</span>
+                    <h5 class="card-title"><?= $streamer['username']; ?></h5>
+                    <p class="card-text"><?= $streamer['nombre_real']; ?></p>
+                    <span class="badge bg-primary"><?= number_format($streamer['followers']); ?> followers</span>
                 </div>
-                <form method="POST">
-                    <input type="hidden" name="destacar_id" value="<?= $s['id']; ?>">
-                    <button class="btn btn-success m-2" type="submit">Destacar</button>
+                <form method="post" action="">
+                    <input type="hidden" name="destacar_id" value="<?= $streamer['id']; ?>">
+                    <button class="btn btn-success m-2" type="submit" name="action" value="destacar">Destacar</button>
                 </form>
             </div>
         </div>
