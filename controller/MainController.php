@@ -15,7 +15,6 @@ class MainController {
 
     public function processRequest() {
         $_SESSION['error'] = '';
-        $_SESSION['info'] = [];
 
         $request=NULL;
 
@@ -26,8 +25,6 @@ class MainController {
         if(isset($_POST['action'])) {
             $request = $_POST['action'];
         }
-        
-        //die(var_dump($request));
 
         switch ($request){
             case "login":
@@ -83,6 +80,7 @@ class MainController {
 
     public function logout() {
         session_destroy();
+        setcookie('username', '', time());
         header("Location: index.php?action=login");
     }
 
